@@ -7,6 +7,17 @@ public class ConcurrentTest {
         useFuture();
 
         useFutureTask();
+
+        // 继承Thread类 , 实现多线程
+        System.out.println("主线程ID: "+Thread.currentThread().getId());
+
+        MyThread thread = new MyThread();
+        thread.start();
+
+        // 实现 Runnable接口 , 实现多线程
+        MyRunnable runnable = new MyRunnable();
+        Thread thread2 = new Thread(runnable);
+        thread2.start();
     }
 
     // 使用 Callable + Future 获取 异步调用的 执行结果
@@ -77,4 +88,6 @@ public class ConcurrentTest {
 
         System.out.println("useFutureTask: 执行完成");
     }
+
+
 }
