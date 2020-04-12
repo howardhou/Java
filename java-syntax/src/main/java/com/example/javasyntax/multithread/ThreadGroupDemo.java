@@ -1,4 +1,4 @@
-package com.example.javasyntax;
+package com.example.javasyntax.multithread;
 
 import java.net.SocketException;
 

@@ -1,4 +1,4 @@
-package com.example.javasyntax;
+package com.example.javasyntax.collection;
 
 import java.util.HashSet;
 
