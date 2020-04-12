@@ -1,51 +1,34 @@
 package com.example.javasyntax.multithread;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
-class CallThread implements Callable<Integer> {
-
-    @Override
-    public Integer call() throws Exception {
-        Integer i=0;
-        for (;i<100 ; i++){
-
-            System.out.println( Thread.currentThread().getName() + " i: "+ i);
-        }
-
-        return i;
-    }
-}
-
-class CallThread2 implements Callable<Integer>{
-    @Override
-    public Integer call() throws Exception {
-        System.out.println("子线程在进行计算");
-        Thread.sleep(3000);
-        int sum = 0;
-        for(int i=0;i<100;i++)
-            sum += i;
-        return sum;
-    }
-}
+import java.util.concurrent.*;
 
 public class CallableDemo {
 
     public static void main(String[] args){
-        CallThread2 callThread = new CallThread2();
+        Task task = new Task();
 
-        FutureTask<Integer> task = new FutureTask<>(callThread);
+// 方法一
+//        FutureTask<Integer> result = new FutureTask<>(task);
+//        Thread thread = new Thread(result, "有返回值");
+//        thread.start();
 
-        Thread thread = new Thread(task, "有返回值");
-        thread.start();
+        // 方法二
+        // Callable 一般情况下是配合ExecutorService使用的
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<Integer> result = executor.submit(task);
+        executor.shutdown();
+
+        System.out.println("主线程在执行任务");
 
         try {
-            System.out.println("task result : " + task.get());
+            // result.get() 会等待子线程执行完成
+            System.out.println("task result : " + result.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        System.out.println("所有任务执行完毕");
     }
 }
